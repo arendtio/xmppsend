@@ -4,7 +4,7 @@ import (
 	"flag"
 	"log"
 
-	"github.com/coyim/coyim/xmpp"
+	xmpp "github.com/mattn/go-xmpp"
 )
 
 var user string
@@ -47,19 +47,15 @@ func main() {
 	}
 
 	log.Printf("Logging in with %s...", user)
-	dialer := &xmpp.Dialer{
-		JID:      user,
-		Password: password,
-	}
-	conn, err := dialer.Dial()
+	cl, err := xmpp.NewClientNoTLS("", user, password, false)
 	if err != nil {
 		log.Fatalf("Error connecting: %s", err)
 		return
 	}
-	defer conn.Close()
+	defer cl.Close()
 
 	log.Printf("Sending message to %s...", recipient)
-	conn.Send(recipient, message)
+	cl.Send(xmpp.Chat{Remote: recipient, Type: "chat", Text: message})
 
 	log.Printf("Closing connection (30s timeout).")
 }
