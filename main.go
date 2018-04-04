@@ -4,7 +4,7 @@ import (
 	"flag"
 	"log"
 
-	"github.com/twstrike/coyim/xmpp"
+	"github.com/coyim/coyim/xmpp"
 )
 
 var user string
